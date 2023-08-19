@@ -165,6 +165,7 @@ customers_union AS (
     SELECT customer_id, company, sub_year, sub_date
     FROM customers
     WHERE sub_year = '2021'
+    UNION ALL
     SELECT customer_id, company, sub_year, sub_date
     FROM customers
     WHERE sub_year = '2022'),
