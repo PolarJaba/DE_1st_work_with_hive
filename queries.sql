@@ -127,6 +127,7 @@ CREATE TABLE IF NOT EXISTS orgs(
 )
 ROW FORMAT DELIMITED 
 FIELDS TERMINATED BY ';'
+CLUSTERED BY (cust_group) INTO 10 BUCKETS
 STORED AS PARQUET;
 
 
@@ -155,9 +156,22 @@ DROP TABLE org_tmp;
 
 -- Создание datamart
 
-WITH count_age AS (
+WITH 
+customers_union AS (
+    SELECT customer_id, first_name, last_name, email, company, sub_year, sub_date
+    FROM customers
+    WHERE sub_year = '2020'
+    UNION ALL 
+    SELECT customer_id, company, sub_year, sub_date
+    FROM customers
+    WHERE sub_year = '2021'
+    SELECT customer_id, company, sub_year, sub_date
+    FROM customers
+    WHERE sub_year = '2022'),
+count_age AS (
     SELECT c.customer_id, c.company, c.sub_year AS sub_year, CAST(months_between(c.sub_date, p.date_of_birth) AS INTEGER)/12 AS c_years_old 
-    FROM customers c, people p), 
+    FROM customers_union c
+    LEFT JOIN people p ON c.first_name = p.first_name AND c.last_name = p.last_name AND c.email = p.email), 
 def_age_group AS (
     SELECT ca.company, ca.sub_year, ag.age_group, COUNT(ag.age_group) AS amt
     FROM count_age ca, ages ag
