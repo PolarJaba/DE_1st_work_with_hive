@@ -1,8 +1,8 @@
 ## Работа с Hive через интерфейс Hue
 
-csv-файлы обработаны [скриптом](https://github.com/PolarJaba/DE_1st_work_with_hive/blob/data/add_column.py). Добавлена колонка cust_group, разделяющая данные на 10 частей, наиболее близких к равным.
+csv-файлы обработаны [скриптом](https://github.com/PolarJaba/DE_1st_work_with_hive/blob/main/data/add_column.py). Добавлена колонка cust_group, разделяющая данные на 10 частей, наиболее близких к равным.
 
-Для удобства дальнейшей работы создан также файл [age_groups.csv](https://github.com/PolarJaba/DE_1st_work_with_hive/blob/data/age_groups.csv), содержащий данные о возрастных категориях.
+Для удобства дальнейшей работы создан также файл [age_groups.csv](https://github.com/PolarJaba/DE_1st_work_with_hive/blob/main/data/age_groups.csv), содержащий данные о возрастных категориях.
 
 Полученные данные загружены в hdfs:
 
@@ -28,4 +28,4 @@ Found 6 items
 drwxr-xr-x   - root polar_jabka          0 2023-08-14 15:46 /user/polar_jabka/hive_practice/raw_data
 ```
 
-SQL-скрипты для создания таблиц и витринны данных находятся в файле [queries.sql](https://github.com/PolarJaba/DE_1st_work_with_hive/blob/queries.sql)
+SQL-скрипты для создания таблиц и витринны данных находятся в файле [queries.sql](https://github.com/PolarJaba/DE_1st_work_with_hive/blob/main/queries.sql)
