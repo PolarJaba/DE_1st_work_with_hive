@@ -165,6 +165,9 @@ DROP TABLE org_tmp;
 
 -- Создание datamart
 
+set hive.strict.checks.cartesian.product = false;
+set hive.mapred.mode = 'nonstrict';
+
 WITH 
 customers_union AS (
     SELECT customer_id, first_name, last_name, email, company, sub_year, sub_date
