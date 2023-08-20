@@ -107,9 +107,9 @@ CREATE TABLE IF NOT EXISTS people(
     job_title STRING,
     cust_group STRING
 )
+CLUSTERED BY (cust_group) INTO 10 BUCKETS
 ROW FORMAT DELIMITED 
 FIELDS TERMINATED BY ';'
-CLUSTERED BY cust_group INTO 10 BUCKETS
 STORED AS PARQUET;
 
 
@@ -125,9 +125,9 @@ CREATE TABLE IF NOT EXISTS orgs(
     nomber_of_employees INT,
     cust_group STRING
 )
+CLUSTERED BY (cust_group) INTO 10 BUCKETS
 ROW FORMAT DELIMITED 
 FIELDS TERMINATED BY ';'
-CLUSTERED BY (cust_group) INTO 10 BUCKETS
 STORED AS PARQUET;
 
 
@@ -149,10 +149,19 @@ SELECT row_index, customer_id, first_name,
     phone_2, email, sub_date, website, cust_group
 FROM customers_tmp WHERE sub_year = '2022';
 
+INSERT INTO TABLE orgs
+SELECT * 
+FROM org_tmp;
+
+INSERT INTO TABLE people
+SELECT * 
+FROM people_tmp;
+
 
 DROP TABLE customers_tmp;
 DROP TABLE people_tmp;
 DROP TABLE org_tmp;
+
 
 -- Создание datamart
 
@@ -162,11 +171,11 @@ customers_union AS (
     FROM customers
     WHERE sub_year = '2020'
     UNION ALL 
-    SELECT customer_id, company, sub_year, sub_date
+    SELECT customer_id, first_name, last_name, email, company, sub_year, sub_date
     FROM customers
     WHERE sub_year = '2021'
     UNION ALL
-    SELECT customer_id, company, sub_year, sub_date
+    SELECT customer_id, first_name, last_name, email, company, sub_year, sub_date
     FROM customers
     WHERE sub_year = '2022'),
 count_age AS (
@@ -181,6 +190,6 @@ def_age_group AS (
 def_main_group AS (    
     SELECT company, sub_year, age_group, (MAX(amt) OVER (PARTITION BY company, sub_year)) AS max_amt
     FROM def_age_group)
-SELECT company AS Company, sub_year AS Year, age_group AS Age_group
+SELECT company, sub_year, age_group
 FROM def_main_group
-GROUP BY Company, Year;
+GROUP BY Company, sub_year, age_group;
