@@ -135,19 +135,19 @@ INSERT INTO TABLE customers PARTITION (sub_year = '2020')
 SELECT row_index, customer_id, first_name,
     last_name, company, city, country, phone_1,
     phone_2, email, sub_date, website, cust_group
-FROM customers_tmp WHERE year_subs = '2020';
+FROM customers_tmp WHERE sub_year = '2020';
 
-INSERT INTO TABLE customers PARTITION (sub_year = '2020')
+INSERT INTO TABLE customers PARTITION (sub_year = '2021')
 SELECT row_index, customer_id, first_name,
     last_name, company, city, country, phone_1,
     phone_2, email, sub_date, website, cust_group
-FROM customers_tmp WHERE year_subs = '2020';
+FROM customers_tmp WHERE sub_year = '2021';
 
-INSERT INTO TABLE customers PARTITION (sub_year = '2020')
+INSERT INTO TABLE customers PARTITION (sub_year = '2022')
 SELECT row_index, customer_id, first_name,
     last_name, company, city, country, phone_1,
     phone_2, email, sub_date, website, cust_group
-FROM customers_tmp WHERE year_subs = '2020';
+FROM customers_tmp WHERE sub_year = '2022';
 
 
 DROP TABLE customers_tmp;
