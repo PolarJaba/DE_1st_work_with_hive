@@ -29,3 +29,11 @@ drwxr-xr-x   - root polar_jabka          0 2023-08-14 15:46 /user/polar_jabka/hi
 ```
 
 SQL-скрипты для создания таблиц и витринны данных находятся в файле [queries.sql](https://github.com/PolarJaba/DE_1st_work_with_hive/blob/main/queries.sql)
+
+В результате получена таблица:
+
+![result](https://github.com/PolarJaba/DE_1st_work_with_hive/blob/main/result.PNG)
+
+Точность полученных данных проверена через вывод количества вхождений клиентов конкретной компании определенной возрастной группы в конктретном году:
+
+![result_check](https://github.com/PolarJaba/DE_1st_work_with_hive/blob/main/result_check.PNG)

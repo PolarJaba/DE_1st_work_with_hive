@@ -131,6 +131,8 @@ FIELDS TERMINATED BY ';'
 STORED AS PARQUET;
 
 
+-- Загрузка данных в постоянные таблицы
+
 INSERT INTO TABLE customers PARTITION (sub_year = '2020')
 SELECT row_index, customer_id, first_name,
     last_name, company, city, country, phone_1,
@@ -195,4 +197,4 @@ def_main_group AS (
     FROM def_age_group)
 SELECT company, sub_year, age_group
 FROM def_main_group
-GROUP BY Company, sub_year, age_group;
+GROUP BY сompany, sub_year, age_group;
