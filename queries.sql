@@ -193,8 +193,9 @@ def_age_group AS (
     WHERE ca.c_years_old BETWEEN ag.min_age AND ag.max_age
     GROUP BY ca.company, ca.sub_year, ag.age_group),
 def_main_group AS (    
-    SELECT company, sub_year, age_group, (MAX(amt) OVER (PARTITION BY company, sub_year)) AS max_amt
+    SELECT company, sub_year, age_group, amt, (MAX(amt) OVER (PARTITION BY company, sub_year)) AS max_amt
     FROM def_age_group)
 SELECT company, sub_year, age_group
 FROM def_main_group
+WHERE amt = max_amt
 GROUP BY сompany, sub_year, age_group;
