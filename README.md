@@ -1,5 +1,21 @@
 ## Работа с Hive через интерфейс Hue
 
+<i>Прим. расчет целевой группы <b>исправлен</b>. Наличие нескольких групп в один год говорит о равном количестве клиентов этих групп, совершивших подписку в данном году.
+
+Ранее ошибка заключалась в присвоении значения количества вхождений целевой группы (т.е. возрастной группы с максимальным количеством подписок) каждой встречающейся в году возрастной группе, проблема решена проверкой равенства количества вхождений данной группы количеству вхождений целевой в данном году.</i>
+
+```
+def_main_group AS (    
+    SELECT company, sub_year, age_group, amt,  (MAX(amt) OVER (PARTITION BY company, sub_year)) AS max_amt -- количество подписок данной возрастной группы (amt) и добавлено количество вхождений целевой группы (max_amt)
+    FROM def_age_group)
+SELECT company, sub_year, age_group
+FROM def_main_group
+WHERE amt = max_amt -- Выделение целевой группы (может быть несколько совпадений) и отсечение прочих
+GROUP BY company, sub_year, age_group;
+```
+
+## Решение
+
 csv-файлы обработаны [скриптом](https://github.com/PolarJaba/DE_1st_work_with_hive/blob/main/data/add_column.py). Добавлена колонка cust_group, разделяющая данные на 10 частей, наиболее близких к равным.
 
 Для удобства дальнейшей работы создан также файл [age_groups.csv](https://github.com/PolarJaba/DE_1st_work_with_hive/blob/main/data/age_groups.csv), содержащий данные о возрастных категориях.
@@ -34,6 +50,6 @@ SQL-скрипты для создания таблиц и витринны да
 
 ![result](https://github.com/PolarJaba/DE_1st_work_with_hive/blob/main/result.PNG)
 
-Точность полученных данных проверена через вывод количества вхождений клиентов конкретной компании определенной возрастной группы в конктретном году:
+Для сравнения таблица результатов без проверки ''WHERE amt = max_amt'':
 
 ![result_check](https://github.com/PolarJaba/DE_1st_work_with_hive/blob/main/result_check.PNG)
